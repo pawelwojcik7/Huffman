@@ -1,80 +1,89 @@
-// Huffman Coding in Java
 
-import java.util.List;
-import java.util.PriorityQueue;
 
+import java.util.*;
+
+import static java.util.Objects.requireNonNull;
 
 public class Huffman {
 
-    static TextManipulator tm;
+    private Node root;
+    private final String text;
+    private Map<Character, Integer> charFrequencies;
+    private final Map<Character, String> huffmanCodes;
+    public TextManipulator tm;
 
-    public static void printCode(HuffmanNode root, String s) {
-        if (root.left == null && root.right == null) {
+    public Huffman(TextManipulator textManipulator) {
+        this.text = textManipulator.slowo;
+        this.tm = textManipulator;
+        fillCharFrequenciesMap();
+        huffmanCodes = new HashMap<>();
+    }
 
-            System.out.println(root.c + "   |  " + s);
+    private void fillCharFrequenciesMap() {
+        charFrequencies = new HashMap<>();
+        for (char character : text.toCharArray()) {
+            Integer integer = charFrequencies.get(character);
+            charFrequencies.put(character, integer != null ? integer + 1 : 1);
+        }
+    }
+
+
+    public String encode() {
+        Queue<Node> queue = new PriorityQueue<>();
+        charFrequencies.forEach((character, frequency) ->
+                queue.add(new Leaf(character, frequency))
+        );
+        while (queue.size() > 1) {
+            queue.add(new Node(queue.poll(), requireNonNull(queue.poll())));
+        }
+        generateHuffmanCodes(root = queue.poll(), "");
+        return getEncodedText();
+    }
+
+    private void generateHuffmanCodes(Node node, String code) {
+        if (node instanceof Leaf) {
+            huffmanCodes.put(((Leaf) node).getCharacter(), code);
             for (int i = 0; i < tm.uniqueList.size(); i++) {
 
-
-                if (tm.tab[i][1].equals(root.c)) {
-                    tm.tab[i][4] = String.valueOf(s);
+                String s =String.valueOf(((Leaf) node).getCharacter());
+                if (tm.tab[i][1].equals(s)) {
+                    tm.tab[i][4] = String.valueOf(code);
 
                 }
             }
-
             return;
         }
-        printCode(root.left, s + "0");
-        printCode(root.right, s + "1");
+        generateHuffmanCodes(node.getLeftNode(), code.concat("0"));
+        generateHuffmanCodes(node.getRightNode(), code.concat("1"));
     }
 
-    public Huffman(TextManipulator textManipulator) {
-        this.tm = textManipulator;
-    }
-
-    ;
-
-    public static void calculate() {
-        int n = tm.uniqueList.size();
-        List<Character> charArray = tm.uniqueList;
-        List<Integer> charfreq = tm.occurrencesList;
-
-        PriorityQueue<HuffmanNode> q = new PriorityQueue<HuffmanNode>(n, new ImplementComparator());
-
-        for (int i = 0; i < n; i++) {
-            HuffmanNode hn = new HuffmanNode();
-
-            hn.c = charArray.get(i).toString();
-            hn.item = charfreq.get(i);
-
-            hn.left = null;
-            hn.right = null;
-
-            q.add(hn);
+    private String getEncodedText() {
+        StringBuilder sb = new StringBuilder();
+        for (char character : text.toCharArray()) {
+            sb.append(huffmanCodes.get(character));
         }
-
-        HuffmanNode root = null;
-        while (q.size() > 1) {
-
-            HuffmanNode x = q.peek();
-            q.poll();
-
-            HuffmanNode y = q.peek();
-            q.poll();
-
-            HuffmanNode f = new HuffmanNode();
-
-            f.item = x.item + y.item;
-            f.c = "-";
-
-                f.left = x;
-                f.right = y;
-
-            root = f;
-
-            q.add(f);
-        }
-        System.out.println(" Char | Huffman code ");
-        System.out.println("--------------------");
-        printCode(root, "");
+        return sb.toString();
     }
+
+
+    public String decode(String encodedText) {
+        StringBuilder sb = new StringBuilder();
+        Node current = root;
+        for (char character : encodedText.toCharArray()) {
+            current = character == '0' ? current.getLeftNode() : current.getRightNode();
+            if (current instanceof Leaf) {
+                sb.append(((Leaf) current).getCharacter());
+                current = root;
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public void printCodes() {
+        huffmanCodes.forEach((character, code) ->
+                System.out.println(character + ": " + code)
+        );
+    }
+
 }

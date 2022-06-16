@@ -75,9 +75,18 @@ public class Widok extends JPanel implements ActionListener, LayoutManager {
             panel.remove(panel3);
             String slowo = tekst.getText().toString();
             TextManipulator tm = new TextManipulator(slowo);
-            Huffman hn = new Huffman(tm);
-            hn.calculate();
-            data = hn.tm.tab;
+            //Huffman hn = new Huffman(tm);
+            //hn.calculate();
+
+            Huffman huffman = new Huffman(tm);
+            String encodedText = huffman.encode();
+            System.out.println(encodedText);
+
+            huffman.printCodes();
+
+            String originalText = huffman.decode(encodedText);
+            System.out.println(originalText);
+            data = huffman.tm.tab;
             table = new JTable(data, columns);
             table.setPreferredScrollableViewportSize(new Dimension(450, 63));
             table.setFillsViewportHeight(true);
