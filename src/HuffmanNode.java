@@ -2,7 +2,7 @@
 
 class HuffmanNode {
     int item;
-    char c;
+    String c;
     HuffmanNode left;
     HuffmanNode right;
 }

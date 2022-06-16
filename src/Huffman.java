@@ -5,22 +5,35 @@ import java.util.PriorityQueue;
 
 
 public class Huffman {
-    static String word = "To begin to toboggan first buy a toboggan, but don't buy too big a toboggan. Too big a toboggan is too big a toboggan to buy to begin to toboggan.";
+
     static TextManipulator tm;
 
     public static void printCode(HuffmanNode root, String s) {
         if (root.left == null && root.right == null) {
 
             System.out.println(root.c + "   |  " + s);
+            for (int i = 0; i < tm.uniqueList.size(); i++) {
+
+
+                if (tm.tab[i][1].equals(root.c)) {
+                    tm.tab[i][4] = String.valueOf(s);
+
+                }
+            }
 
             return;
         }
         printCode(root.left, s + "0");
         printCode(root.right, s + "1");
     }
-    public static void Huffman(){};
+
+    public Huffman(TextManipulator textManipulator) {
+        this.tm = textManipulator;
+    }
+
+    ;
+
     public static void calculate() {
-        tm= new TextManipulator(word);
         int n = tm.uniqueList.size();
         List<Character> charArray = tm.uniqueList;
         List<Integer> charfreq = tm.occurrencesList;
@@ -30,7 +43,7 @@ public class Huffman {
         for (int i = 0; i < n; i++) {
             HuffmanNode hn = new HuffmanNode();
 
-            hn.c = charArray.get(i);
+            hn.c = charArray.get(i).toString();
             hn.item = charfreq.get(i);
 
             hn.left = null;
@@ -40,7 +53,6 @@ public class Huffman {
         }
 
         HuffmanNode root = null;
-        System.out.println(q.size());
         while (q.size() > 1) {
 
             HuffmanNode x = q.peek();
@@ -52,9 +64,11 @@ public class Huffman {
             HuffmanNode f = new HuffmanNode();
 
             f.item = x.item + y.item;
-            f.c = '-';
-            f.left = x;
-            f.right = y;
+            f.c = "-";
+
+                f.left = x;
+                f.right = y;
+
             root = f;
 
             q.add(f);

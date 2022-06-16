@@ -11,7 +11,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Huffman huffman=new Huffman();
         JFrame frame = new JFrame("HuffmanCalculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Widok widok = new Widok();
@@ -20,6 +19,5 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
-        huffman.calculate();
     }
 }

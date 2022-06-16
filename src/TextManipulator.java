@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TextManipulator {
@@ -17,11 +15,18 @@ public class TextManipulator {
     public TextManipulator(String str) {
         this.slowo = str;
         this.dlugosc = str.length();
-        this.chars = this.convertStringToCharList(str);
-        this.uniqueList = this.uniqueCharsFromList(chars);
-        this.occurrencesList=this.charsOccurrences(chars,uniqueList);
-        this.charsProbabilityList= this.charsProbability(occurrencesList);
-        this.tab=this.makeArray(this);
+        this.chars = convertStringToCharList(str);
+        this.uniqueList = uniqueCharsFromList(chars);
+        this.occurrencesList=charsOccurrences(chars,uniqueList);
+        this.charsProbabilityList= charsProbability(occurrencesList);
+        this.tab=makeArray();
+        Arrays.sort(tab, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] o1, String[] o2) {
+                if(Double.parseDouble(o1[3])>Double.parseDouble(o2[3])) return 1;
+                else return -1;
+            }
+        });
     }
 
     public static List<Character> convertStringToCharList(String str) { // konwersja łańcucha znaków na Listę znaków
@@ -54,18 +59,18 @@ public class TextManipulator {
     public static List<Double> charsProbability(List<Integer> occurrencesList) { // wyliczenie prawdopodobieństw
         List<Double> charsProbabilityList = new ArrayList<>(); // lista prawdopodobienstw
         int suma = occurrencesList.stream().mapToInt(Integer::intValue).sum(); // suma elementow z listy
-        charsProbabilityList = occurrencesList.stream().map(e -> (double) e / suma).collect(Collectors.toList());
+        charsProbabilityList = occurrencesList.stream().map(e -> (double) Math.round(e*10000000 / suma)/10000000).collect(Collectors.toList());
         return charsProbabilityList;
     }
-    public static String[][] makeArray(TextManipulator tm)
+    public String[][] makeArray()
     {
-        String[][] table = new String[tm.uniqueList.size()][5];
-        for(int i=0;i<tm.uniqueList.size();i++)
+        String[][] table = new String[this.uniqueList.size()][5];
+        for(int i=0;i<this.uniqueList.size();i++)
         {
             table[i][0]= String.valueOf(i);
-            table[i][1]=String.valueOf(tm.uniqueList.get(i));
-            table[i][2]=String.valueOf(tm.occurrencesList.get(i));
-            table[i][3]=String.valueOf(tm.charsProbabilityList.get(i));
+            table[i][1]=String.valueOf(this.uniqueList.get(i));
+            table[i][2]=String.valueOf(this.occurrencesList.get(i));
+            table[i][3]=String.valueOf(this.charsProbabilityList.get(i));
             table[i][4]= String.valueOf("0");
 
         }
