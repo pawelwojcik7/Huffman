@@ -20,6 +20,8 @@ public class Widok extends JPanel implements ActionListener, LayoutManager{
     JPanel panel2;
     JScrollPane panel3;
     JTable table;
+    String[] columns = {"id","char","weight","probability","code"};
+    String[][] data ;
     public Widok()
     {
         panel=new JPanel();
@@ -57,13 +59,7 @@ public class Widok extends JPanel implements ActionListener, LayoutManager{
         oblicz3=new JButton("Vitter");
         oblicz3.addActionListener(this);
         panel2.add(oblicz3);
-        String[] columns = {"id","index","char","weight","probability","code"};
-        String[][] data= {{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},{"1","1","1","1","1","1"},};
-        table = new JTable(data,columns);
-        table.setPreferredScrollableViewportSize(new Dimension(450,63));
-        table.setFillsViewportHeight(true);
         panel3 = new JScrollPane(table);
-
         panel.add(panel1);
         panel.add(panel2);
         panel.add(panel3);
@@ -72,8 +68,18 @@ public class Widok extends JPanel implements ActionListener, LayoutManager{
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        if(s.equals("Oblicz"))
+        if(s.equals("Huffman")&&(tekst.getText()!=null||tekst.getText()!=""))
         {
+            panel.remove(panel3);
+            String slowo = tekst.getText().toString();
+            TextManipulator tm = new TextManipulator(slowo);
+            data = tm.tab;
+            table = new JTable(data, columns);
+            table.setPreferredScrollableViewportSize(new Dimension(450, 63));
+            table.setFillsViewportHeight(true);
+            panel3 = new JScrollPane(table);
+            panel.add(panel3);
+            panel.revalidate();
 
         }
         if(s.equals("Rysuj drzewo"))

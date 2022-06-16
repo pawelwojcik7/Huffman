@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 public class Huffman {
     static String word = "To begin to toboggan first buy a toboggan, but don't buy too big a toboggan. Too big a toboggan is too big a toboggan to buy to begin to toboggan.";
     static TextManipulator tm;
+
     public static void printCode(HuffmanNode root, String s) {
         if (root.left == null && root.right == null) {
 

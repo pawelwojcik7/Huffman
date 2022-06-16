@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,7 @@ public class TextManipulator {
     List<Integer> occurrencesList;
     List<Double> charsProbabilityList;
 
+    String[][] tab;
     public TextManipulator(String str) {
         this.slowo = str;
         this.dlugosc = str.length();
@@ -19,6 +21,7 @@ public class TextManipulator {
         this.uniqueList = this.uniqueCharsFromList(chars);
         this.occurrencesList=this.charsOccurrences(chars,uniqueList);
         this.charsProbabilityList= this.charsProbability(occurrencesList);
+        this.tab=this.makeArray(this);
     }
 
     public static List<Character> convertStringToCharList(String str) { // konwersja łańcucha znaków na Listę znaków
@@ -53,5 +56,19 @@ public class TextManipulator {
         int suma = occurrencesList.stream().mapToInt(Integer::intValue).sum(); // suma elementow z listy
         charsProbabilityList = occurrencesList.stream().map(e -> (double) e / suma).collect(Collectors.toList());
         return charsProbabilityList;
+    }
+    public static String[][] makeArray(TextManipulator tm)
+    {
+        String[][] table = new String[tm.uniqueList.size()][5];
+        for(int i=0;i<tm.uniqueList.size();i++)
+        {
+            table[i][0]= String.valueOf(i);
+            table[i][1]=String.valueOf(tm.uniqueList.get(i));
+            table[i][2]=String.valueOf(tm.occurrencesList.get(i));
+            table[i][3]=String.valueOf(tm.charsProbabilityList.get(i));
+            table[i][4]= String.valueOf("0");
+
+        }
+        return table;
     }
 }
