@@ -19,7 +19,7 @@ public class Main {
         frame.setPreferredSize(new Dimension(600,650));
         frame.pack();
         frame.setVisible(true);
-        //frame.setResizable(true);
+        frame.setResizable(false);
         huffman.calculate();
     }
 }

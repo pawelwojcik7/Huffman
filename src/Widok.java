@@ -13,8 +13,9 @@ public class Widok extends JPanel implements ActionListener, LayoutManager{
     JButton oblicz1;
     JButton oblicz2;
     JButton oblicz3;
+    JScrollPane scroll;
 
-    JTextField tekst;
+    JTextArea tekst;
     JLabel napis;
     JPanel panel1;
     JPanel panel2;
@@ -40,12 +41,14 @@ public class Widok extends JPanel implements ActionListener, LayoutManager{
 
 
         napis= new JLabel("Słowo",SwingConstants.CENTER);
-
         panel1.add(napis);
-        tekst = new JTextField(20);
-        tekst.addActionListener(this);
+
+        tekst = new JTextArea();
         tekst.setEditable(true);
-        panel1.add(tekst);
+        tekst.setLineWrap(true);
+        tekst.setWrapStyleWord(true);
+        scroll = new JScrollPane(tekst);
+        panel1.add(scroll);
 
         drzewo= new JButton("Rysuj drzewo");
         panel2.add(drzewo);
